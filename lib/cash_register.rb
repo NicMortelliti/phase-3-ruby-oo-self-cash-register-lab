@@ -1,22 +1,17 @@
 require 'pry'
 
 class CashRegister
-  attr_accessor :discount, :total, :quantity, :cart, :last
+  attr_accessor :discount, :total, :items, :last
 
   def initialize(discount = 0)
     @total = 0
     @discount = discount
-    @cart = []
-  end
-
-  def total
-    @total
+    @items = []
   end
 
   def add_item(title, price, quantity = 1)
-    self.quantity = quantity
     self.total += price.to_f * quantity
-    quantity.times {self.cart << title}
+    quantity.times {self.items << title}
     self.last = {title: title, price: price, quantity: quantity}
   end
 
@@ -26,12 +21,8 @@ class CashRegister
     : "After the discount, the total comes to $#{@total.to_i}."
   end
 
-  def items()
-    @cart
-  end
-
   def void_last_transaction
-    self.cart = self.last[:quantity].times {self.cart.pop}
+    self.items = self.last[:quantity].times {self.items.pop}
     
     self.total -= self.last[:price] * self.last[:quantity]
   end
